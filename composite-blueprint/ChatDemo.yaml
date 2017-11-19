@@ -1,0 +1,118 @@
+id: ChatDemo
+name: Chat Demo
+description: ''
+status: PUBLISHED
+properties:
+  __nsx.edge_reservation_policy:
+    fixed: virtualiseme01
+    required: false
+    secured: false
+    visible: false
+  __nsx.loadbalancer.logging_level:
+    fixed: None
+    required: false
+    secured: false
+    visible: false
+  __nsx.management_endpoint_name:
+    fixed: supervCenter
+    required: false
+    secured: false
+    visible: false
+  __nsx.transport_zone_name:
+    fixed: Super-TZ
+    required: false
+    secured: false
+    visible: false
+components:
+  '10100024':
+    type: Infrastructure.Network.Network.Existing
+    data:
+      name:
+        fixed: '10100024'
+      network_profile:
+        fixed: 10.10.0.0/24
+  CentOS764bit_1:
+    type: CentOS764bit
+    data:
+      vSphere_Machine_1:
+        nics:
+        - address: ''
+          assignment_type: Static
+          id: 0
+          load_balancing: HTTP
+          network: ${_resource~10100024}
+          network_profile: 10.10.0.0/24
+  On-Demand_Load_Balancer_1:
+    type: Infrastructure.Network.LoadBalancer.NSX.OnDemand
+    data:
+      name:
+        fixed: On-Demand_Load_Balancer_1
+      services:
+        fixed:
+        - acceleration: false
+          algorithm: ROUND_ROBIN
+          algorithm_parameters: null
+          connection_limit: 0
+          connection_rate_limit: 0
+          description: ''
+          health_check_interval: null
+          health_check_max_retries: null
+          health_check_method: null
+          health_check_port: null
+          health_check_protocol: None
+          health_check_receive: null
+          health_check_send: null
+          id: 58e64898-3a9a-4ef6-9d37-5bb2784848bf
+          member_max_connections: 0
+          member_min_connections: 0
+          member_port: 3000
+          member_protocol: null
+          name: HTTP
+          persistence_cookie_mode: null
+          persistence_cookie_name: null
+          persistence_expiration: null
+          persistence_method: None
+          port: 80
+          response_timeout: null
+          service_URI: null
+          transparent: false
+      tier:
+        fixed: ${_resource~CentOS764bit_1~vSphere_Machine_1}
+      tier_nic_index:
+        fixed: 0
+      vip_network:
+        fixed: ${_resource~10100024}
+  Software.Install.ChatDemo_1:
+    type: Software.SoftwareInstallChatDemo
+    dependsOn:
+    - Software.Install.MongoDB_1
+    data:
+      host:
+        fixed: ${_resource~CentOS764bit_1~vSphere_Machine_1}
+  Software.Install.MongoDB_1:
+    type: Software.SoftwareInstallMongoDB
+    dependsOn:
+    - Software.Install.NodeJSv6_1
+    data:
+      host:
+        fixed: ${_resource~CentOS764bit_1~vSphere_Machine_1}
+  Software.Install.NodeJSv6_1:
+    type: Software.SoftwareInstallNodeJSv6
+    data:
+      host:
+        fixed: ${_resource~CentOS764bit_1~vSphere_Machine_1}
+  System.Firewall.Disable_1:
+    type: Software.SystemFirewallDisable
+    dependsOn:
+    - Software.Install.ChatDemo_1
+    data:
+      host:
+        fixed: ${_resource~CentOS764bit_1~vSphere_Machine_1}
+layout:
+  '10100024': 1,0
+  CentOS764bit_1: 0,1
+  On-Demand_Load_Balancer_1: 0,0
+  Software.Install.ChatDemo_1: 2,0
+  Software.Install.MongoDB_1: 1,0
+  Software.Install.NodeJSv6_1: 0,0
+  System.Firewall.Disable_1: 3,0

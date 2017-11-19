@@ -1,0 +1,53 @@
+'@type': "SoftwareComponentType"
+createdDate: "2017-11-16T12:38:37.897Z"
+lastUpdated: "2017-11-16T12:38:46.155Z"
+id: "Software.SoftwareInstallNodeJSv6"
+name: "Software.Install.NodeJSv6"
+description: ""
+publishStatus: "PUBLISHED"
+publishStatusName: "Published"
+schema:
+  fields:
+  - id: "host"
+    label: "Container"
+    description: ""
+    dataType:
+      type: "ref"
+      componentTypeId: "com.vmware.csp.iaas.blueprint.service"
+      classId: "Infrastructure.Machine.Schema"
+      label: "Machine"
+    state:
+      dependencies: []
+      facets:
+      - type: "visible"
+        value:
+          type: "constantClause"
+          value:
+            type: "boolean"
+            value: false
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "internal"
+        value:
+          type: "constantClause"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
+containerFieldId: "host"
+lifecycleTasks:
+- createdDate: "2017-11-16T12:38:37.898Z"
+  lastUpdated: "2017-11-16T19:09:20.390Z"
+  script:
+    scriptContent: "wget https://mirror.aarnet.edu.au/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm\n\
+      rpm -ivh epel-release-7-11.noarch.rpm\n\ncurl --silent --location https://rpm.nodesource.com/setup_6.x\
+      \ | sudo bash -\nyum -y install nodejs\n"
+    isRebootAfter: false
+    scriptTypeId: "Bash"
+  taskDescriptorRef:
+    id: "INSTALL"
+    label: "Install"

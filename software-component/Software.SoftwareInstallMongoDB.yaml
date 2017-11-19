@@ -1,0 +1,72 @@
+'@type': "SoftwareComponentType"
+createdDate: "2017-10-21T13:22:41.499Z"
+lastUpdated: "2017-10-21T13:23:14.551Z"
+id: "Software.SoftwareInstallMongoDB"
+name: "Software.Install.MongoDB"
+description: ""
+publishStatus: "PUBLISHED"
+publishStatusName: "Published"
+schema:
+  fields:
+  - id: "host"
+    label: "Container"
+    dataType:
+      type: "ref"
+      componentTypeId: "com.vmware.csp.iaas.blueprint.service"
+      classId: "Infrastructure.Machine.Schema"
+      label: "Machine"
+    state:
+      dependencies: []
+      facets:
+      - type: "visible"
+        value:
+          type: "constantClause"
+          value:
+            type: "boolean"
+            value: false
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "internal"
+        value:
+          type: "constantClause"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
+containerFieldId: "host"
+lifecycleTasks:
+- createdDate: "2017-10-21T13:22:41.500Z"
+  lastUpdated: "2017-10-21T13:22:41.500Z"
+  script:
+    scriptContent: "yum install -y mongodb-org"
+    isRebootAfter: false
+    scriptTypeId: "Bash"
+  taskDescriptorRef:
+    id: "CONFIGURE"
+    label: "Configure"
+- createdDate: "2017-10-21T13:22:41.501Z"
+  lastUpdated: "2017-10-21T13:22:41.501Z"
+  script:
+    scriptContent: "mkdir /dbdata\nmongod --port 27017 --dbpath /dbdata --fork --logpath\
+      \ /var/log/mongodb.log\n"
+    isRebootAfter: false
+    scriptTypeId: "Bash"
+  taskDescriptorRef:
+    id: "START"
+    label: "Start"
+- createdDate: "2017-10-21T13:22:41.501Z"
+  lastUpdated: "2017-10-21T13:22:41.501Z"
+  script:
+    scriptContent: "/bin/cat <<'EOF' > /etc/yum.repos.d/mongodb-org-3.4.repo\n[mongodb-org-3.4]\n\
+      name=MongoDB Repository\nbaseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.4/x86_64/\n\
+      gpgcheck=1\nenabled=1\ngpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc\n\
+      EOF"
+    isRebootAfter: false
+    scriptTypeId: "Bash"
+  taskDescriptorRef:
+    id: "INSTALL"
+    label: "Install"

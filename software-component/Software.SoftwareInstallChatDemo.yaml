@@ -1,0 +1,55 @@
+'@type': "SoftwareComponentType"
+createdDate: "2017-11-16T11:47:00.428Z"
+lastUpdated: "2017-11-16T11:47:04.779Z"
+id: "Software.SoftwareInstallChatDemo"
+name: "Software.Install.ChatDemo"
+description: ""
+publishStatus: "PUBLISHED"
+publishStatusName: "Published"
+schema:
+  fields:
+  - id: "host"
+    label: "Container"
+    description: ""
+    dataType:
+      type: "ref"
+      componentTypeId: "com.vmware.csp.iaas.blueprint.service"
+      classId: "Infrastructure.Machine.Schema"
+      label: "Machine"
+    state:
+      dependencies: []
+      facets:
+      - type: "visible"
+        value:
+          type: "constantClause"
+          value:
+            type: "boolean"
+            value: false
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "internal"
+        value:
+          type: "constantClause"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
+containerFieldId: "host"
+lifecycleTasks:
+- createdDate: "2017-11-16T11:47:00.429Z"
+  lastUpdated: "2017-11-16T23:36:57.289Z"
+  script:
+    scriptContent: "mkdir /chat\ncd /chat\nyum -y update openssl\nnpm rebuild\nnpm\
+      \ i simple-nodejs-chat\ncd /chat/node_modules/simple-nodejs-chat\nwget -q http://www.virtualiseme.net.au/wp-content/uploads/2017/10/server.js\
+      \ -O /chat/node_modules/simple-nodejs-chat/server.js \n\nnpm install forever\
+      \ -g\n\nnpm install \n\ncd /chat/node_modules/simple-nodejs-chat\nforever start\
+      \ server.js\n"
+    isRebootAfter: false
+    scriptTypeId: "Bash"
+  taskDescriptorRef:
+    id: "INSTALL"
+    label: "Install"

@@ -1,0 +1,50 @@
+'@type': "SoftwareComponentType"
+createdDate: "2017-11-17T00:15:58.848Z"
+lastUpdated: "2017-11-17T00:16:42.341Z"
+id: "Software.SystemFirewallDisable"
+name: "System.Firewall.Disable"
+description: ""
+publishStatus: "PUBLISHED"
+publishStatusName: "Published"
+schema:
+  fields:
+  - id: "host"
+    label: "Container"
+    dataType:
+      type: "ref"
+      componentTypeId: "com.vmware.csp.iaas.blueprint.service"
+      classId: "Infrastructure.Machine.Schema"
+      label: "Machine"
+    state:
+      dependencies: []
+      facets:
+      - type: "visible"
+        value:
+          type: "constantClause"
+          value:
+            type: "boolean"
+            value: false
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "internal"
+        value:
+          type: "constantClause"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
+containerFieldId: "host"
+lifecycleTasks:
+- createdDate: "2017-11-17T00:15:58.848Z"
+  lastUpdated: "2017-11-17T00:15:58.848Z"
+  script:
+    scriptContent: "systemctl stop firewalld\nsystemctl disable firewalld"
+    isRebootAfter: false
+    scriptTypeId: "Bash"
+  taskDescriptorRef:
+    id: "INSTALL"
+    label: "Install"
